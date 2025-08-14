@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اسلایدشو عاشقانه با افکت تایپ</title>
+    <style>
+        body {
+            background-color: #000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            color: #c1ff00;
+            position: relative;
+        }
+        
+        /* ستاره باران */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        /* کانفتی */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            animation: confetti-fall 5s linear infinite;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(193, 255, 0, 0.3);
+            z-index: 1;
+        }
+        
+        #typewriter {
+            font-size: 1rem; /* تغییر اندازه فونت به 1rem */
+            line-height: 2rem; /* تغییر فاصله خطوط به 2rem */
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.5rem;
+            background-color: #c1ff00;
+            animation: blink 1s infinite;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .heart {
+            color: #c1ff00;
+            font-size: 1.8rem;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        /* کنترل موزیک */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div id="confetti-container"></div>
+    <div class="container">
+        <div id="typewriter"></div>
+    </div>
+    
+    <!-- کنترل موزیک -->
+    <div class="music-control" id="musicControl">🎵</div>
+    
+    <!-- تگ صدا - فایل موسیقی باید در همان پوشه با نام music.mp3 باشد -->
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+        مرورگر شما از پخش صدا پشتیبانی نمی‌کند.
+    </audio>
+
+    <script>
+        // ایجاد ستاره‌های باران
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starsCount = 100;
+            
+            for (let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                const size = Math.random() * 3;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDuration = `${10 + Math.random() * 20}s`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // ایجاد کانفتی
+        function createConfetti() {
+            const colors = ['#f00', '#0f0', '#00f', '#ff0', '#f0f', '#0ff'];
+            const container = document.getElementById('confetti-container');
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = `${3 + Math.random() * 4}s`;
+                    confetti.style.width = `${5 + Math.random() * 10}px`;
+                    confetti.style.height = `${5 + Math.random() * 10}px`;
+                    container.appendChild(confetti);
+                    
+                    // حذف کانفتی پس از پایان انیمیشن
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }, i * 200);
+            }
+        }
+        
+        // کنترل موزیک
+        function setupMusic() {
+            const music = document.getElementById('bgMusic');
+            const control = document.getElementById('musicControl');
+            
+            // تلاش برای پخش خودکار (ممکن است در برخی مرورگرها کار نکند)
+            music.volume = 0.3;
+            const playPromise = music.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log('پخش خودکار متوقف شد، نیاز به تعامل کاربر');
+                });
+            }
+            
+            control.addEventListener('click', () => {
+                if (music.paused) {
+                    music.play();
+                    control.textContent = '🔊';
+                } else {
+                    music.pause();
+                    control.textContent = '🔇';
+                }
+            });
+        }
+        
+        // متون شما
+        const texts = [
+            "تو آفریده شده‌ای برای من! ❤️‍🔥<br>تو از همان ابتدا به دنیا آمده‌ای<br>که مال خودِ من باشی.. 🥰<br>چگونه عشقیست که چنین در دل من<br>پیچ و تاب می‌خورد،<br>حال قلب من با تو همانند هیچ روزی نیست<br>نه شبیه دیروز و نه هیچ فردای دیگری.. 💞<br>اما!<br>من حسادت می‌کنم<br>به تمام آن روزها و شب‌هایی<br>که تو را نداشتمت…<br>چشمانم حسادت می‌کند<br>به تمام عکس‌هایت که من کنارت نبوده‌ام.. 🕊️<br>تمام تو برای من شده.<br>این را تو بدان...",
+            
+            "لحظه‌ها شیرینند وقتے تو بامنے؛ <br>تولدټ مبارڪ عشق جۅنم! ִֶָ♥️🎂",
+            
+            "عزیزِ جانِ دلم ، <br>مشترک دائمیِ قلب من !<br>می‌دونی ؟ <br>تو تنها دلیل آروم بودنم توی این دنیای شلوغی!<br>تنها کسی که لبخندش می‌تونه روزمو از این رو به اون رو کنه. تو همونی که اگه یه لحظه ناراحت ببینمت، دلم آشوب میشه و اگه بخندی، انگار همه‌ی غصه‌هام دود میشن میرن آسمون.<br>من واسه یه لحظه نگاهت، یه دنیا رو جا میذارم، واسه یه لبخندت، از خودم هم می‌گذرم. آخه هیچ‌کس اندازه‌ی تو توی قلبم جا نداره ، هیچ کس اونجوری که تو منو می‌لرزونی ، نمیتونه...<br>تو اون « یکی‌یی » هستی که بعدش هیچ‌کس مهم نیست.<br>تو شدی تمومِ آرزوهای من !<br>بودنِ تو ، قشنگ ترین اتفاق این زندگیه",
+            
+            "در رۅز تولدِ تو <br>بیشتر از قبل حس میکنم کہ <br>بودنټ قشنگ‌ترین اتفاق زندگي من است؛ <br>تولدټ مبارڪ! ִֶָ 🥹❤️‍🩹",
+            
+            "نگام کن ...<br>من با تمام تار و پودم، با نفس‌هام، با نبضم، قول میدم همیشه باشم ؛ هر وقت دلت گرفت، شونه‌هامو داری ، هر وقت خسته شدی ، بغلم منتظرته. هر وقت حتی یه ذره عشق خواستی، قلبم با آغوش باز برات می‌تپه.<br>راستش این قلب دیگه مال من نیست ...<br>از وقتی اومدی، انگار صاحبشو پیدا کرده.<br>هر چی میکشه واسه توئه، هر تپشش با اسم تو عجینه...<br>تو فرق داری با تموم آدمای دنیا، با تموم لحظه‌های قبل از تو.<br>فقط وقتی دست‌هاتو می‌گیرم، می‌فهمم دنیا هنوز قشنگه، وقتی نگام تو نگاهته، دلم پر از حسای خوب میشه و وقتی لب‌هاتو می‌بوسم، حس می‌کنم هیچ آرزویی دیگه ندارم جز همین لحظه...<br>تو ماهِ شبایِ تاره منی ،<br>نور آرومم وسط تمام این شلوغی‌ها ...<br>پس بمون، تا همیشه، تا آخرِ دنیا",
+            
+            "تۅلد تو \"تـــۅلدِ من\" اسټ؛ <br>چون وقتے تو می‌آیۍ<br>من زندگي میکنم… <br>پس تۅلدمان مبارڪ! ִֶָ 💙💎",
+            
+            "عشقم همون بار اول که دیدمت، از دیوونگی تو چشات فهمیدم که برای نرفتن اومدی ...<br>من تورو تو قلبم جا می‌دم و تموم دنیا رو با یه لبخندت می‌گردم که هیچ‌وقت پاک نمی‌شه. <br>دلم پر از اطمینانه از این حس و همه‌ی کتاب‌ها اسم اینو گذاشتن عشق؛ <br>همون حسی که با ذوقت قهقه می‌زنم و با بغضت اشک‌های شور رو میریزم.<br>تو مسیح احساسات مرده‌ی منی و من تا آخرین روز، زیر صلیب، بوسه‌هات رو نگه می‌دارم…",
+            
+            "تولد تو «تولدِ قلب من» است؛<br>با آمدنت، زندگی من روشن می‌شود…<br>تولدمان مبارک! 🥹❤️‍🩹",
+            
+            "من همه ی غصه هامو با تو یادم میره..<br>با تو مهم نیس جنگ باشه یا صلح..<br>با تو مهم نیس دنیا چه رنگیه..<br>مهم تویی دورِ سرت بگردم..<br>مهم تویی که جونِ منی<br>مهم تویی که من قلب و وجودم<br>بند بندِ تنم پُر شده از تو<br>اخه قربون اون قلب قشنگت برم <br>تو با من باشی مگه مهمه اصن چه اتفاقی میوفته؟<br>تو باشی من پشتم به کوه گرمه..<br>تو باشی من دنیا حریفم نیست..<br>تو فقط باش..<br>فقط بمون..<br>تا من عاشقانه بمیرم برات..",
+            
+            "تولد تو، یادآور تمام حس‌های خوب دنیاست؛<br>تولد تو مبارک عشق جاودانم! 🌹💖",
+            
+            "تو خونه‌ی مني پس بدون من هرچقدرم ازت دور بشم، بازم به خودت برمیگردم؛ چون درست وقتی که فکر میکردم، به این دنیا و آدماش تعلقی ندارم، تو بودی که به حریم قلبم نزدیک شدی و تکه شکسته های قلبمو بوسیدی؛ وقتی فکر میکردم آخرین نفرِ هر آدمم بهم عشق دادی و گفتی دنیای تو منم؛ شک ندارم روحِ من و تو بهم گره خورده پس بذار زمونه هرچقدر میخواد کشش بده؛ قلب من تا همیشه برای آدم اَمنِش میمونه بهت قول میدم، <br>تولدت مبارک عزیز قلبم بهترینا سهم قلب مهربونت.",
+            
+            "امروز، روز توست و من فقط یک آرزو دارم؛<br>همیشه کنارم باشی…<br>تولدت مبارک عشقم! 💌💖",
+            
+            "تو زیباترین و اصیل ترین لذت منی<br>تو واقعی ترین آدم زندگیه منی<br>بودنت بهم انگیزه میده<br>جرات عاشقی میده<br>تو همونی هستی که<br>یه تار از موهاتو به دنیا نمیدم<br>همونی که چشمام به جز اون کسی رو نمیبینن<br>همونی که وقتی دلم میگیره بهش پناه میارم<br>همونی که امید میشه وسط ناامیدیام<br>همونی که باعث میشه از زندگیم لذت ببرم<br>همونی که براش میمیرم<br>خلاصه که تو به دنیا اومدی<br>بشی همه کَس من، همه دنیای من.",
+            
+            "تو آمدی و قلبم برای همیشه تولد گرفت…<br>تولدت مبارک عشق جاودانم! 🥰💎",
+            
+            "تو مثل کوچه هایی که تهش<br>به دریا میرسن حس خوبی میدی<br>مثل گیلاسای تازه، بارون.<br>آفتاب یواش ، بوی شکلات<br>مثل قفل شدن تو یه آغوش بعد از<br>حس نا امنی ، آهنگای بی‌کلام با پیانو<br>و رقص بارون آرامش بخشی.<br>تو اندازه آسمون پر ستاره کویر زیبایی<br>مثل ماه تو دل شب میدرخشی<br>اصلا میدونی تو همه چیزایی هستی که<br>من از این زندگی میخواستم . . .🫂💙",
+            
+            "امروز روزی است که جهان من زیباتر شد؛<br>تولدت مبارک، دلیل خوشبختی من! 💙✨",
+            
+            "خاص ترینم تپش قلبم، تو نه تنها شریک زندگی من، بلکه روشنایی دل و انگیزه روزهایم هستی. <br>هر لحظه در کنار تو، پر از آرامش و عشق است و تو به زندگی‌ام معنا و زیبایی می‌بخشی. <br>در آستانه میلاد تو، دلم می‌خواهد از تمام وجودم بگویم که چقدر قدردان حضور و محبتت هستم. باشد<br>آرزو میکنم زندگی برایمان سرشار از لحظات ناب، عشق بی‌پایان و رویاهای مشترک باشد. تو همیشه بهترین بخش زندگی من خواهی بود. ❤️",
+            
+            "اگر دنیا هزار بار دیگه هم شروع می‌شد، باز هم آرزو می‌کردم تو در روزی مثل امروز به دنیا بیای…  <br>تا بشی دلیل لبخندم، آرامشم، عشقم. تولدت مبارک فرشته‌ی زمینی من 💫"
+        ];
+
+        const typewriterElement = document.getElementById('typewriter');
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typingSpeed = 60; /* تغییر سرعت به 60 */
+        let pauseBetweenTexts = 3000;
+        
+        // ایجاد افکت‌ها
+        createStars();
+        setInterval(createConfetti, 5000); // ایجاد کانفتی هر 5 ثانیه
+        
+        // تنظیم موزیک
+        setupMusic();
+
+        function typeWriter() {
+            const currentText = texts[textIndex];
+            
+            if (isDeleting) {
+                typewriterElement.innerHTML = currentText.substring(0, charIndex - 1) + '<span class="cursor"></span>';
+                charIndex--;
+                
+                if (charIndex === 0) {
+                    isDeleting = false;
+                    textIndex = (textIndex + 1) % texts.length;
+                    setTimeout(typeWriter, typingSpeed);
+                } else {
+                    setTimeout(typeWriter, typingSpeed / 3);
+                }
+            } else {
+                typewriterElement.innerHTML = currentText.substring(0, charIndex) + '<span class="cursor"></span>';
+                charIndex++;
+                
+                if (charIndex > currentText.length) {
+                    isDeleting = false;
+                    setTimeout(() => {
+                        isDeleting = true;
+                        setTimeout(typeWriter, pauseBetweenTexts);
+                    }, pauseBetweenTexts);
+                } else {
+                    setTimeout(typeWriter, typingSpeed);
+                }
+            }
+        }
+
+        // Start the typewriter effect
+        typeWriter();
+    </script>
+</body>
+</html>
