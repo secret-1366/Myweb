@@ -1,219 +1,114 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تولدت مبارک بهاری❤️</title>
-    <style>
-        body {
-            background-color: #000;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            color: #c1ff00;
-            position: relative;
-        }
-        
-        /* ستاره باران */
-        .stars {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        
-        .star {
-            position: absolute;
-            background-color: #fff;
-            border-radius: 50%;
-            animation: fall linear infinite;
-        }
-        
-        @keyframes fall {
-            to {
-                transform: translateY(100vh);
-            }
-        }
-        
-        /* کانفتی */
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #f00;
-            animation: confetti-fall 5s linear infinite;
-        }
-        
-        @keyframes confetti-fall {
-            0% {
-                transform: translateY(-100px) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-        
-        .container {
-            width: 90%;
-            max-width: 600px;
-            text-align: center;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(193, 255, 0, 0.3);
-            z-index: 1;
-        }
-        
-        #typewriter {
-            font-size: 1rem; /* تغییر اندازه فونت به 1rem */
-            line-height: 2rem; /* تغییر فاصله خطوط به 2rem */
-            min-height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        
-        .cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1.5rem;
-            background-color: #c1ff00;
-            animation: blink 1s infinite;
-            position: absolute;
-            right: 0;
-            bottom: 0;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        
-        .heart {
-            color: #c1ff00;
-            font-size: 1.8rem;
-            display: inline-block;
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
-        }
-        
-        /* کنترل موزیک */
-        .music-control {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.7);
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 100;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تولدت مبارک بهاری❤️</title>
+<style>
+    body {
+        background-color: #000;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+        color: #c1ff00;
+        position: relative;
+    }
+    /* ستاره باران */
+    .stars { position: absolute; top:0; left:0; width:100%; height:100%; z-index:-1; }
+    .star { position:absolute; background-color:#fff; border-radius:50%; animation:fall linear infinite; }
+    @keyframes fall { to { transform:translateY(100vh); } }
+
+    /* کانفتی */
+    .confetti { position:absolute; width:10px; height:10px; background-color:#f00; animation:confetti-fall 5s linear infinite; }
+    @keyframes confetti-fall { 0% { transform:translateY(-100px) rotate(0deg); opacity:1; } 100% { transform:translateY(100vh) rotate(360deg); opacity:0; } }
+
+    .container { width:90%; max-width:600px; text-align:center; padding:20px; background-color:rgba(0,0,0,0.7); border-radius:15px; box-shadow:0 0 20px rgba(193,255,0,0.3); z-index:1; }
+
+    #typewriter { font-size:1rem; line-height:2rem; min-height:300px; display:flex; align-items:center; justify-content:center; position:relative; }
+    .cursor { display:inline-block; width:2px; height:1.5rem; background-color:#c1ff00; animation:blink 1s infinite; position:absolute; right:0; bottom:0; }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+    .heart { color:#c1ff00; font-size:1.8rem; display:inline-block; animation:pulse 1.5s infinite; }
+    @keyframes pulse { 0%{transform:scale(1);} 50%{transform:scale(1.3);} 100%{transform:scale(1);} }
+
+    /* کنترل موزیک */
+    .music-control { position:fixed; bottom:20px; right:20px; background:rgba(0,0,0,0.7); padding:10px; border-radius:50%; cursor:pointer; z-index:100; }
+</style>
 </head>
 <body>
-    <div class="stars" id="stars"></div>
-    <div id="confetti-container"></div>
-    <div class="container">
-        <div id="typewriter"></div>
-    </div>
-    
-    <!-- کنترل موزیک -->
-    <div class="music-control" id="musicControl">🎵</div>
-    
-    <!-- تگ صدا - فایل موسیقی باید در همان پوشه با نام music.mp3 باشد -->
-    <audio id="bgMusic" loop>
-        <source src="https://dl.musicdel.ir/Music/1401/11/ahmad_solo_note_sol%20128.mp3" type="audio/mpeg">
-        مرورگر شما از پخش صدا پشتیبانی نمی‌کند.
-    </audio>
+<div class="stars" id="stars"></div>
+<div id="confetti-container"></div>
+<div class="container">
+    <div id="typewriter"></div>
+</div>
 
-    <script>
-        // ایجاد ستاره‌های باران
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const starsCount = 100;
-            
-            for (let i = 0; i < starsCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                
-                const size = Math.random() * 3;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.animationDuration = `${10 + Math.random() * 20}s`;
-                star.style.animationDelay = `${Math.random() * 5}s`;
-                
-                starsContainer.appendChild(star);
-            }
+<!-- کنترل موزیک -->
+<div class="music-control" id="musicControl">🎵</div>
+
+<!-- موزیک آنلاین -->
+<audio id="bgMusic" loop autoplay>
+    <source src="https://dl.musicdel.ir/Music/1401/11/ahmad_solo_note_sol%20128.mp3" type="audio/mpeg">
+    مرورگر شما از پخش صدا پشتیبانی نمی‌کند.
+</audio>
+
+<script>
+    // ستاره‌ها
+    function createStars(){
+        const starsContainer=document.getElementById('stars');
+        for(let i=0;i<100;i++){
+            const star=document.createElement('div');
+            star.classList.add('star');
+            const size=Math.random()*3;
+            star.style.width=`${size}px`;
+            star.style.height=`${size}px`;
+            star.style.left=`${Math.random()*100}%`;
+            star.style.top=`${Math.random()*100}%`;
+            star.style.animationDuration=`${10+Math.random()*20}s`;
+            star.style.animationDelay=`${Math.random()*5}s`;
+            starsContainer.appendChild(star);
         }
-        
-        // ایجاد کانفتی
-        function createConfetti() {
-            const colors = ['#f00', '#0f0', '#00f', '#ff0', '#f0f', '#0ff'];
-            const container = document.getElementById('confetti-container');
-            
-            for (let i = 0; i < 50; i++) {
-                setTimeout(() => {
-                    const confetti = document.createElement('div');
-                    confetti.classList.add('confetti');
-                    confetti.style.left = `${Math.random() * 100}%`;
-                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.animationDuration = `${3 + Math.random() * 4}s`;
-                    confetti.style.width = `${5 + Math.random() * 10}px`;
-                    confetti.style.height = `${5 + Math.random() * 10}px`;
-                    container.appendChild(confetti);
-                    
-                    // حذف کانفتی پس از پایان انیمیشن
-                    setTimeout(() => {
-                        confetti.remove();
-                    }, 5000);
-                }, i * 200);
-            }
+    }
+
+    // کانفتی
+    function createConfetti(){
+        const colors=['#f00','#0f0','#00f','#ff0','#f0f','#0ff'];
+        const container=document.getElementById('confetti-container');
+        for(let i=0;i<50;i++){
+            setTimeout(()=>{
+                const confetti=document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left=`${Math.random()*100}%`;
+                confetti.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
+                confetti.style.animationDuration=`${3+Math.random()*4}s`;
+                confetti.style.width=`${5+Math.random()*10}px`;
+                confetti.style.height=`${5+Math.random()*10}px`;
+                container.appendChild(confetti);
+                setTimeout(()=>{ confetti.remove(); },5000);
+            }, i*200);
         }
-        
-        // کنترل موزیک
-        function setupMusic() {
-            const music = document.getElementById('bgMusic');
-            const control = document.getElementById('musicControl');
-            
-            // تلاش برای پخش خودکار (ممکن است در برخی مرورگرها کار نکند)
-            music.volume = 0.3;
-            const playPromise = music.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log('پخش خودکار متوقف شد، نیاز به تعامل کاربر');
-                });
-            }
-            
-            control.addEventListener('click', () => {
-                if (music.paused) {
-                    music.play();
-                    control.textContent = '🔊';
-                } else {
-                    music.pause();
-                    control.textContent = '🔇';
-                }
-            });
+    }
+
+    // کنترل موزیک
+    function setupMusic(){
+        const music=document.getElementById('bgMusic');
+        const control=document.getElementById('musicControl');
+        music.volume=0.3;
+        const playPromise=music.play();
+        if(playPromise!==undefined){
+            playPromise.catch(error=>console.log('پخش خودکار نیاز به تعامل کاربر دارد'));
         }
-        
-        // متون شما
-        const texts = [
+        control.addEventListener('click',()=>{
+            if(music.paused){ music.play(); control.textContent='🔊'; }
+            else { music.pause(); control.textContent='🔇'; }
+        });
+    }
+
+    // متون
+    const texts = [
             "تو آفریده شده‌ای برای من! ❤️‍🔥<br>تو از همان ابتدا به دنیا آمده‌ای<br>که مال خودِ من باشی.. 🥰<br>چگونه عشقیست که چنین در دل من<br>پیچ و تاب می‌خورد،<br>حال قلب من با تو همانند هیچ روزی نیست<br>نه شبیه دیروز و نه هیچ فردای دیگری.. 💞<br>اما!<br>من حسادت می‌کنم<br>به تمام آن روزها و شب‌هایی<br>که تو را نداشتمت…<br>چشمانم حسادت می‌کند<br>به تمام عکس‌هایت که من کنارت نبوده‌ام.. 🕊️<br>تمام تو برای من شده.<br>این را تو بدان...",
             
             "لحظه‌ها شیرینند وقتے تو بامنے؛ <br>تولدټ مبارڪ عشق جۅنم! ִֶָ♥️🎂",
@@ -250,54 +145,30 @@
             
             "اگر دنیا هزار بار دیگه هم شروع می‌شد، باز هم آرزو می‌کردم تو در روزی مثل امروز به دنیا بیای…  <br>تا بشی دلیل لبخندم، آرامشم، عشقم. تولدت مبارک فرشته‌ی زمینی من 💫"
         ];
+    const typewriterElement=document.getElementById('typewriter');
+    let textIndex=0, charIndex=0, isDeleting=false, typingSpeed=60, pauseBetweenTexts=3000;
 
-        const typewriterElement = document.getElementById('typewriter');
-        let textIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        let typingSpeed = 60; /* تغییر سرعت به 60 */
-        let pauseBetweenTexts = 3000;
-        
-        // ایجاد افکت‌ها
-        createStars();
-        setInterval(createConfetti, 5000); // ایجاد کانفتی هر 5 ثانیه
-        
-        // تنظیم موزیک
-        setupMusic();
+    createStars();
+    setInterval(createConfetti,5000);
+    setupMusic();
 
-        function typeWriter() {
-            const currentText = texts[textIndex];
-            
-            if (isDeleting) {
-                typewriterElement.innerHTML = currentText.substring(0, charIndex - 1) + '<span class="cursor"></span>';
-                charIndex--;
-                
-                if (charIndex === 0) {
-                    isDeleting = false;
-                    textIndex = (textIndex + 1) % texts.length;
-                    setTimeout(typeWriter, typingSpeed);
-                } else {
-                    setTimeout(typeWriter, typingSpeed / 3);
-                }
-            } else {
-                typewriterElement.innerHTML = currentText.substring(0, charIndex) + '<span class="cursor"></span>';
-                charIndex++;
-                
-                if (charIndex > currentText.length) {
-                    isDeleting = false;
-                    setTimeout(() => {
-                        isDeleting = true;
-                        setTimeout(typeWriter, pauseBetweenTexts);
-                    }, pauseBetweenTexts);
-                } else {
-                    setTimeout(typeWriter, typingSpeed);
-                }
-            }
+    function typeWriter(){
+        const currentText=texts[textIndex];
+        if(isDeleting){
+            typewriterElement.innerHTML=currentText.substring(0,charIndex-1)+'<span class="cursor"></span>';
+            charIndex--;
+            if(charIndex===0){ isDeleting=false; textIndex=(textIndex+1)%texts.length; setTimeout(typeWriter,typingSpeed);}
+            else setTimeout(typeWriter,typingSpeed/3);
+        } else {
+            typewriterElement.innerHTML=currentText.substring(0,charIndex)+'<span class="cursor"></span>';
+            charIndex++;
+            if(charIndex>currentText.length){
+                isDeleting=false;
+                setTimeout(()=>{ isDeleting=true; setTimeout(typeWriter,pauseBetweenTexts); }, pauseBetweenTexts);
+            } else setTimeout(typeWriter,typingSpeed);
         }
-
-        // Start the typewriter effect
-        typeWriter();
-    </script>
+    }
+    typeWriter();
+</script>
 </body>
 </html>
-
